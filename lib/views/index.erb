@@ -1,0 +1,97 @@
+<h1>Scica Courbes</h1>
+<b>Xmin : </b><%= @minX %>
+<b>Xmax : </b><%= @maxX %><br/>
+<b>Ymin : </b><%= @minY %>
+<b>Ymax : </b><%= @maxY %><br/>
+<center>
+  <canvas id="dessin" style="border:1px black dashed"></canvas>
+</center>
+
+<form action="/" method="get">
+  <input type="text" name="f" value="<%= @fn.expression_orig %>"/>
+</form>
+
+<script type="text/javascript" language="javascript">
+  var longueur = <%= @longueur %>;
+  var hauteur = <%= @hauteur %>;
+  var minX = <%= @minX %>
+  var maxX = <%= @maxX %>
+  var minY = <%= @minY %>
+  var maxY = <%= @maxY %>
+  var uX = longueur/(maxX-minX);
+  var uY = hauteur/(maxY-minY);
+  var canvas = document.getElementById("dessin");
+
+  //ON VERIFIE SI LE NAVIGATEUR PEUT GERER LES CANVAS
+  if(canvas.getContext) {
+    var contexte = canvas.getContext('2d');
+    //ON DEFINIT LA TAILLE DU CANVAS
+    canvas.setAttribute("width", longueur);
+    canvas.setAttribute("height", hauteur);
+
+    //LA COULEUR DES AXES
+    contexte.strokeStyle = "black";
+
+    //ON TRACE L'AXE DES ABCISSE
+    if (minY*maxY<0) {
+      contexte.moveTo(X(minX,0), Y(minX,0));
+      contexte.lineTo(X(maxX,0), Y(maxX,0));
+
+      //ON PLACE LES UNITES
+      for(i=Math.floor(minX); i<=Math.ceil(maxX); i++){
+        contexte.moveTo(X(i,0), Y(i,0));
+        contexte.lineTo(X(i,0.1), Y(i,0.1));
+      }
+    }
+
+    //ON TRACE L'AXE DES ORDONN?ES
+    if (minX*maxX<0) {
+      contexte.moveTo(X(0,minY),Y(0,minY));
+      contexte.lineTo(X(0,maxY), Y(0,maxY));
+
+      //PLACE LES UNITES
+      for(i=Math.floor(minY); i<=Math.ceil(maxY); i++){
+        contexte.moveTo(X(0,i), Y(0,i));
+        contexte.lineTo(X(0.1,i), Y(0.1,i));
+      }
+    }
+
+    //FIN DESSIN DES AXES
+    contexte.stroke();
+
+    //DEBUT TRACE DE LA FONCTION
+    contexte.strokeStyle = "green";
+<%
+move = true
+@points.sort.each { |e|
+  if e[1].nil?
+    move = true
+  else
+    if move
+    %>
+          contexte.moveTo(X(<%= e[0] %>,<%= e[1] %>), Y(<%= e[0] %>,<%= e[1] %>));
+    <% else %>
+          contexte.lineTo(X(<%= e[0] %>,<%= e[1] %>), Y(<%= e[0] %>,<%= e[1] %>));
+    <%
+    end
+    move = false
+  end
+}
+%>
+    contexte.stroke();
+  } else {
+
+    //SI LE NAVIGATEUR N'EST PAS COMPATIBLE
+    alert("c'est pas compatible avec votre navigateur");
+  }
+
+  //LA VALEUR DU x(PIXEL) D'UN POINT
+  function X(x, y) {
+    return (x-minX)*uX;
+  }
+
+  //LA VALEUR DU y(PIXEL) D'UN POINT
+  function Y(x, y) {
+    return (maxY-y)*uY;
+  }
+</script>
