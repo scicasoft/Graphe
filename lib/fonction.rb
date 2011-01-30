@@ -2,7 +2,7 @@
 class Fonction
   
   attr_accessor :expression
-  M = ['cos', 'sin', 'tan', 'exp', 'log', 'log10', 'sqrt', 'PI']
+  M = ['cos', 'sin', 'tan', 'exp', 'log', 'log10', 'sqrt', 'PI'].freeze
 
   #constructeur
   def initialize e
@@ -43,4 +43,5 @@ class Fonction
     self.expression.gsub!('ln','log')
     M.each { |e| self.expression.gsub!(e, "Math.#{e}") }
   end
+  
 end

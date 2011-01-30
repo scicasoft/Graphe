@@ -1,6 +1,6 @@
 == grapheFonction
 
-installer les gems : sinatra et sass
+installer les gems : sinatra et haml
 
 = lancement de l'application
 
