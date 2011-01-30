@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'sinatra'
 #gem qui interprete les fichiers erb
 require 'erb'
