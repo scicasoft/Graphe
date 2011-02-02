@@ -1,7 +1,7 @@
-#d?finition de la classe fonction
+#definition de la classe fonction
 class Fonction
-  
   attr_accessor :expression
+  
   M = ['cos', 'sin', 'tan', 'exp', 'log', 'log10', 'sqrt', 'PI'].freeze
 
   #constructeur
@@ -16,7 +16,7 @@ class Fonction
   end
 
   #calcule les images des X compris dans min et max en progressant par pas de interval et retourne le resultat sous forme de tableau de hachage
-  def fa min, max, interval
+  def fa min, max, interval=1
     tab = {}
     i = min
     while i <= max
@@ -28,6 +28,10 @@ class Fonction
       i += interval
     end
     tab
+  end
+
+  def abs x
+    x.abs
   end
 
   def expression_orig

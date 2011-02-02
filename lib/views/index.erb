@@ -1,15 +1,26 @@
 <h1>Scica Courbes</h1>
-<b>Xmin : </b><%= @minX %>
-<b>Xmax : </b><%= @maxX %><br/>
-<b>Ymin : </b><%= @minY %>
-<b>Ymax : </b><%= @maxY %><br/>
-<center>
-  <canvas id="dessin" style="border:1px black dashed"></canvas>
-</center>
-
 <form action="/" method="get">
-  <input type="text" name="f" value="<%= @fn.expression_orig %>"/>
+  <table width="100%">
+    <tr>
+      <td>Xmin : </td>
+      <td><input type="text" name="minx" value="<%=@minX%>" /></td>
+      <td>Xmax : </td>
+      <td><input type="text" name="maxx" value="<%=@maxX%>" /></td>
+    </tr>
+    <tr>
+      <td>Ymin : </td>
+      <td><input type="text" name="miny" value="<%=@minY%>" /></td>
+      <td>Ymax : </td>
+      <td><input type="text" name="maxy" value="<%=@maxY%>" /></td>
+    </tr>
+  </table>
+  <input type="text" name="f" value="<%= @fn.expression_orig %>"/><br/>
+  <div style="text-align: right"><input type="submit" /></div>
 </form>
+
+<center>
+  <canvas id="dessin" style="border:1px red dashed"></canvas>
+</center>
 
 <script type="text/javascript" language="javascript">
   var longueur = <%= @longueur %>;
@@ -18,8 +29,11 @@
   var maxX = <%= @maxX %>
   var minY = <%= @minY %>
   var maxY = <%= @maxY %>
+  // le nombre de pixel par unit? sur les abscisses
   var uX = longueur/(maxX-minX);
+  // le nombre de pixel par unit? sur les ordonn?s
   var uY = hauteur/(maxY-minY);
+
   var canvas = document.getElementById("dessin");
 
   //ON VERIFIE SI LE NAVIGATEUR PEUT GERER LES CANVAS
@@ -39,7 +53,7 @@
 
       //ON PLACE LES UNITES
       for(i=Math.floor(minX); i<=Math.ceil(maxX); i++){
-        contexte.moveTo(X(i,0), Y(i,0));
+        contexte.moveTo(X(i,-0.1), Y(i,-0.1));
         contexte.lineTo(X(i,0.1), Y(i,0.1));
       }
     }
@@ -51,7 +65,7 @@
 
       //PLACE LES UNITES
       for(i=Math.floor(minY); i<=Math.ceil(maxY); i++){
-        contexte.moveTo(X(0,i), Y(0,i));
+        contexte.moveTo(X(-0.1,i), Y(-0.1,i));
         contexte.lineTo(X(0.1,i), Y(0.1,i));
       }
     }
@@ -74,7 +88,7 @@ move = true
           contexte.lineTo(X(<%= e[0] %>,<%= e[1] %>), Y(<%= e[0] %>,<%= e[1] %>));
     <%
     end
-    move = false
+    move = false;
   end
 }
 %>

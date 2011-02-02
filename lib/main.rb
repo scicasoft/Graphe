@@ -15,17 +15,17 @@ end
 #la page d'accueil
 get '/' do
   #longueur de la zone de dessin en pixel
-  @longueur = 800
+  @longueur = (params[:longueur] || 800).to_f
   #hauteur de la zone de dessin en pixel
-  @hauteur = 400
+  @hauteur = (params[:hauteur] || 400).to_f
   #la X min
-  @minX = -10
+  @minX = (params[:minx] || -10).to_f
   #le X max
-  @maxX = 10
+  @maxX = (params[:maxx] || 10).to_f
   #le Y min
-  @minY = -5
+  @minY = (params[:miny] || -5).to_f
   #le Y max
-  @maxY = 5
+  @maxY = (params[:maxy] || 5).to_f
   #on cree un objet fonction avec la fonction ? tracer
   @fn = Fonction.new(params[:f] || '0')
   #on calcule l'image de chaque point de l'interval
